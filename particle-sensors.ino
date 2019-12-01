@@ -5,6 +5,10 @@
 #include "AirQualityWing.h"
 #include "board.h"
 
+#define DB_80      600
+
+
+
 
 // Counter
 int i = 0;
@@ -12,6 +16,7 @@ int i = 0;
 int soundlevel = A0;
 int soundgate  = A2;
 bool sound_detected;
+int sound_dB;
 
 // Air Quality Data
 AirQualityWingData_t Air_data;
@@ -97,9 +102,12 @@ void loop() {
 //   sound_detected = digitalRead(soundgate);
   if (digitalRead(soundgate) == true){
     // Air_data = AirQual.getData();
-    
+    sound_dB = analogRead(soundlevel);
     // Particle.publish("Sound Level", String(Air_data.si7021.data.temperature), PRIVATE);
-    Particle.publish("Sound Level", String(analogRead(soundlevel)), PRIVATE);
+    Particle.publish("Sound Level", String(sound_dB), PRIVATE);
+    if (sound_dB > DB_80){
+        Particle.publish("\"Very Loud\" alart", "OVER 80 dB", PRIVATE);
+    }
   }
   //Air Quality 
   uint32_t err_code = AirQual.process();
