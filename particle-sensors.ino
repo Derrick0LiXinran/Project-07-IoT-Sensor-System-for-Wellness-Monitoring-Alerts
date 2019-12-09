@@ -53,6 +53,38 @@ int set_interval( String period ) {
 
 }
 
+// void PublishCO2(const char *event, const char *data)
+// {
+
+
+//   //Data needs to be in a string so if you are using a global to save your values
+//   //You need to use this function to change to a string 
+//   //So you can send it to the argon system
+//   // The options are NewWeight,NewCO2,NewSound for the first field
+//   data = String(Air_data.ccs811.data.c02);
+
+//   Particle.publish("NewcO2",data);
+
+
+// }
+
+// void PublishTVOC(const char *event, const char *data)
+// {
+
+
+//   //Data needs to be in a string so if you are using a global to save your values
+//   //You need to use this function to change to a string 
+//   //So you can send it to the argon system
+//   // The options are NewWeight,NewCO2,NewSound for the first field
+//   data = String(Air_data.ccs811.data.tvoc);
+
+//   Particle.publish("NewTVOC",data);
+
+
+// }
+
+
+
 // setup() runs once, when the device is first turned on.
 void setup() {
 
@@ -70,7 +102,7 @@ void setup() {
 
   // Default settings
   AirQualityWingSettings_t defaultSettings =
-  { MEASUREMENT_DELAY_MS, //Measurement Interval
+  { 15000, //Measurement Interval
     false,                 //Has HPMA115
     true,                 //Has CCS811
     true,                 //Has Si7021
@@ -93,6 +125,9 @@ void setup() {
 
   // Startup message
   Serial.println("Air Quality Wing for Particle Mesh");
+  
+//   Particle.subscribe("NewcO2",PublishCO2,ALL_DEVICES);
+
 
 }
 
@@ -100,14 +135,19 @@ void setup() {
 void loop() {
   //Sound
 //   sound_detected = digitalRead(soundgate);
+// String a = "{\"a\":" + String(sound_dB) + ",\"b\":12.34,\"c\":123}";
+//   Particle.publish("test1data", a, PRIVATE);
+//   delay(10000);
+
   if (digitalRead(soundgate) == true){
     // Air_data = AirQual.getData();
     sound_dB = analogRead(soundlevel);
     // Particle.publish("Sound Level", String(Air_data.si7021.data.temperature), PRIVATE);
-    Particle.publish("Sound Level", String(sound_dB), PRIVATE);
+    Particle.publish("SoundLevel", String(sound_dB), PRIVATE);
     if (sound_dB > DB_80){
-        Particle.publish("\"Very Loud\" alart", "OVER 80 dB", PRIVATE);
+        Particle.publish("\"VeryLoud\"alart", "OVER 80 dB", PRIVATE);
     }
+    delay(500);
   }
   //Air Quality 
   uint32_t err_code = AirQual.process();
