@@ -134,15 +134,10 @@ void setup() {
 // loop() runs over and over again, as quickly as it can execute.
 void loop() {
   //Sound
-//   sound_detected = digitalRead(soundgate);
-// String a = "{\"a\":" + String(sound_dB) + ",\"b\":12.34,\"c\":123}";
-//   Particle.publish("test1data", a, PRIVATE);
-//   delay(10000);
+
 
   if (digitalRead(soundgate) == true){
-    // Air_data = AirQual.getData();
     sound_dB = analogRead(soundlevel);
-    // Particle.publish("Sound Level", String(Air_data.si7021.data.temperature), PRIVATE);
     Particle.publish("SoundLevel", String(sound_dB), PRIVATE);
     if (sound_dB > DB_80){
         Particle.publish("\"VeryLoud\"alart", "OVER 80 dB", PRIVATE);
