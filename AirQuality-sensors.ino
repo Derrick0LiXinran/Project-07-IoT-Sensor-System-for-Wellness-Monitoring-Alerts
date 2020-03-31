@@ -280,7 +280,7 @@ void BATT_check(){
         // Battery is low and need to be charge
         Particle.publish("LowBatteryFlagBetha", "L");
         
-    }
+    } 
 }
 
 
