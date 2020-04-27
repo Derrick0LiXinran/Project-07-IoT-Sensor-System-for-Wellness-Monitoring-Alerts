@@ -72,13 +72,15 @@ void AirQualityWingEvent()
     if ((old_temperature - (int) data_AirQ.si7021.data.temperature) > 5 ||
             (old_temperature - (int) data_AirQ.si7021.data.temperature) < -5 )
     {
-        Particle.publish("temperatureSharp", "{\"temperatureSharp\":1}", PRIVATE, WITH_ACK);
+        Particle.publish("temperatureSharp",
+            "{\"temperatureSharp\":1}", PRIVATE, WITH_ACK);
     }
 
     if ((old_Humidity - (int) data_AirQ.si7021.data.humidity) > 5 ||
         (old_Humidity - (int) data_AirQ.si7021.data.humidity) < -5 )
     {
-        Particle.publish("HumiditySharp", "{\"HumiditySharp\":1}", PRIVATE, WITH_ACK);
+        Particle.publish("HumiditySharp",
+            "{\"HumiditySharp\":1}", PRIVATE, WITH_ACK);
     }
 
     old_temperature = (int) data_AirQ.si7021.data.temperature;
@@ -197,12 +199,13 @@ void loop()
         if (bathroomTime - oldBathroomTime >= Mins5 && bathroomTime != 0)
         {
             Particle.publish("BathroomDuration", "{\"BathroomDuration\":"
-                    + String ((bathroomEnd - bathroomStart) / 1000) + "}", PRIVATE, WITH_ACK);
+                    + String ((bathroomEnd - bathroomStart) / 1000) + "}",
+                    PRIVATE, WITH_ACK);
             if ((bathroomEnd - bathroomStart) / 1000 > 900)
             {
                 Particle.publish("ToLongAlert", "{\"ToLongAlert\":"
-                + String ((bathroomEnd - bathroomStart) / 1000 / 60)
-                + "}", PRIVATE, WITH_ACK);
+                    + String ((bathroomEnd - bathroomStart) / 1000 / 60)
+                    + "}", PRIVATE, WITH_ACK);
             }
 
             counter = 0;
